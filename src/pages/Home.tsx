@@ -871,8 +871,20 @@ export default function Home() {
                 transition={{ duration: 3, repeat: Infinity, delay: 1 }}
               />
               
-              {/* 始终显示canvas元素，但在没有内容时隐藏 */}
-              <div className="w-[260px] sm:w-[300px] h-[260px] sm:h-[300px] flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden shadow-inner border border-slate-200 dark:border-slate-700">
+               {/* 始终显示canvas元素，但在没有内容时隐藏 */}
+              <div className="w-[260px] sm:w-[300px] h-[260px] sm:h-[300px] flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden shadow-inner border border-slate-200 dark:border-slate-700 relative">
+                {/* 确保canvas元素始终存在 */}
+                <motion.canvas 
+                  ref={canvasRef} 
+                  className={`rounded-lg shadow-sm ${!qrCodeDataUrl && !isGenerating ? 'opacity-0' : 'opacity-100'}`}
+                  aria-label="生成的二维码"
+                  width={260}
+                  height={260}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: qrCodeDataUrl ? 1 : 0, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                ></motion.canvas>
+                
                 {isGenerating ? (
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-100/90 dark:bg-slate-800/90 rounded-xl">
                     <motion.div 
@@ -883,7 +895,7 @@ export default function Home() {
                     <p className="mt-3 text-base text-slate-500 dark:text-slate-400">生成中...</p>
                   </div>
                 ) : !qrCodeDataUrl ? (
-                  <div className="flex flex-col items-center">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
@@ -912,39 +924,26 @@ export default function Home() {
                     </motion.p>
                   </div>
                 ) : (
-                  <>
-                    <motion.canvas 
-                      ref={canvasRef} 
-                      className="block rounded-lg shadow-sm"
-                      aria-label="生成的二维码"
-                      width={260}
-                      height={260}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                    ></motion.canvas>
-                    
-                     <div className="absolute -bottom-5 right-0 flex space-x-3">
-                       <motion.button
-                         whileHover={{ scale: 1.1, rotate: 15 }}
-                         whileTap={{ scale: 0.9 }}
-                         onClick={copyToClipboard}
-                         className="p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-all duration-300 active:scale-90"
-                         aria-label="复制二维码"
-                       >
-                         <i className="fa-regular fa-copy"></i>
-                       </motion.button>
-                       <motion.button
-                         whileHover={{ scale: 1.1, rotate: -15 }}
-                         whileTap={{ scale: 0.9 }}
-                         onClick={printQRCode}
-                         className="p-3 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 active:scale-90"
-                         aria-label="打印二维码"
-                       >
-                         <i className="fa-solid fa-print"></i>
-                       </motion.button>
-                     </div>
-                  </>
+                  <div className="absolute -bottom-5 right-0 flex space-x-3">
+                    <motion.button
+                      whileHover={{ scale: 1.1, rotate: 15 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={copyToClipboard}
+                      className="p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-all duration-300 active:scale-90"
+                      aria-label="复制二维码"
+                    >
+                      <i className="fa-regular fa-copy"></i>
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.1, rotate: -15 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={printQRCode}
+                      className="p-3 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 active:scale-90"
+                      aria-label="打印二维码"
+                    >
+                      <i className="fa-solid fa-print"></i>
+                    </motion.button>
+                  </div>
                 )}
               </div>
               

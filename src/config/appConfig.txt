@@ -1,9 +1,9 @@
 # 网站配置
-site.title=kiwi二维码生成器
+site.title=极简二维码生成器
 site.subtitle=快速创建QR码
 site.description=输入网址或文本，即可生成高质量二维码图片
 
 # 页脚配置
-footer.copyright=kiwi二维码生成器 © {currentYear}
+footer.copyright=极简二维码生成器 © {currentYear}
 footer.tagline=无需注册，完全免费
-footer.version=1.2.0
+footer.version=1.0.0
